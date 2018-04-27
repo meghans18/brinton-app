@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!-- notes
 Rob Shepard, GIS Specialist at University of Iowa Libraries
+Ethan DeGross, Web Developer at University of Iowa Libraries
+Meghan Saak, Junior Web Developer at University of Iowa Libraries
 Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hosting the content
-
-
 -->
 <html>
   <head>
@@ -12,80 +12,64 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- INCLUDES -->
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-      <!-- include leaflet / slider css, js local files -->
-      <script src="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet-src.js"></script>
+    <!-- include leaflet / slider css, js local files -->
+    <script src="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet-src.js"></script>
 
-      <link rel="stylesheet" href="../main.css">
-      <link rel="stylesheet" href="public/leaflet-1/leaflet.css" />
-	  <!--OLD LINK IS HERE - <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet.css" /> -->
-      <script src="../dataAndSlider.js"></script>
-      <!-- include a pretty little stamenizer -->
-      <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
-      <!-- include fuse first, then the leaflet plugins that use fuse searching -->
-      <script src="public/fuse-1.2.1/fuse.min.js"></script>
-      <script src="public/leafletFuseSearch-noVersion/leafletfuse.js"></script>
-      <link rel="stylesheet" href="public/leafletFuseSearch-noVersion/leafletfuse.css" type="text/css"/>
-      <!-- jquery scripts and css -->
-      <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-      <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-      <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
-      <!-- Include this library for mobile touch support (not tested) -->
-      <script src="public/jqueryUiTouchPunch-0.2.2/jquery.ui.touch-punch.min.js"></script>
-	    <!-- Load Esri Leaflet from CDN -->
-  <script src="https://cdn.jsdelivr.net/leaflet.esri/2.0.2/esri-leaflet.js"></script>
-      <!-- include json data points -->
-      <!-- <script src="brintondata2.js"></script> -->
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="public/leaflet-1/leaflet.css" />
+    <!--OLD LINK IS HERE - <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1.0.0-rc.3/leaflet.css" /> -->
+    <script src="../dataAndSlider.js"></script>
+    <!-- include a pretty little stamenizer -->
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+    <!-- include fuse first, then the leaflet plugins that use fuse searching -->
+    <script src="public/fuse-1.2.1/fuse.min.js"></script>
+    <script src="public/leafletFuseSearch-noVersion/leafletfuse.js"></script>
+    <link rel="stylesheet" href="public/leafletFuseSearch-noVersion/leafletfuse.css" type="text/css"/>
+    <!-- jquery scripts and css -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
+    <!-- Include this library for mobile touch support (not tested) -->
+    <script src="public/jqueryUiTouchPunch-0.2.2/jquery.ui.touch-punch.min.js"></script>
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://cdn.jsdelivr.net/leaflet.esri/2.0.2/esri-leaflet.js"></script>
+    <!-- include json data points -->
+    <!-- <script src="brintondata2.js"></script> -->
 
 
 	  <link rel="stylesheet" type="text/css" href="css/style.css">
 	  <link rel="stylesheet" type="text/css" href="css/navwrap.css">
-	  	  <style type="text/css">
-
+	  <style type="text/css">
 	    #map {
-            width: 100%;
-            height: 100%;
-			left: 1px;
-
-			position: absolute;
-        }
-
+        width: 100%;
+        height: 100%;
+        left: 1px;
+        position: absolute;
+      }
 		</style>
-
-
-
   </head>
 
 
   <body>
-
-    <img id="icon" src="../icon.png" width="75" height="75" style="position:fixed; border-radius: 8px;">
+    <!--hamburger icon to navigate the different views -->
+    <img id="icon" src="../icon.png" width="75" height="75" style="position:fixed; border-radius: 8px; left:-10px;">
 
     <!-- provide the map with a div to live inside -->
     <div id="map" style="width: 100%; height: 100%; position: absolute"></div>
-	
-	<div id="feature_infos">
-		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the slider in the top right corner to view his path from venue to venue.</p></div>
-	</div>
+
+  	<div id="feature_infos">
+  		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the slider in the top right corner to view his path from venue to venue.</p></div>
+  	</div>
 
     <script>
-      // set up with openstreetmaps
-
 	  	  var myIcon = L.icon({
-    iconUrl: 'my-icon.png',
-    iconRetinaUrl: 'my-icon@2x.png',
-    iconSize: [1, 1],
-    iconAnchor: [1, 1],
-    popupAnchor: [-1, -1]
-});
+        iconUrl: 'my-icon.png',
+        iconRetinaUrl: 'my-icon@2x.png',
+        iconSize: [1, 1],
+        iconAnchor: [1, 1],
+        popupAnchor: [-1, -1]
+      });
 
-//THIS IS THE OLD CODE, SETS JUST THE BASE MAP WITHOUT OTHER BASE LAYERS
-//      var map = L.map('map').setView(new L.LatLng(41.259944, -95.937057), 15);
-
-      // grabbing custom base map
-// L.esri.tiledMapLayer({
-//    url: "https://gis.lib.uiowa.edu/gislib1/rest/services/Rob/omabase/MapServer"
-//  }).addTo(map);
-//AND YOU CAN UNCOMMENT DOWN TO HERE TO REACTIVATE, BUT WHY
 
 	 var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -93,45 +77,44 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 
 //here I use an esri tiled WMS layer, a tiled layer out on mapbox, and a GeoServer tiled map service. This is really for my own reference... PS the commas and "names = " stuff replaces variables. You call up all the layers in one spot
 
-	 var blanktile =  L.esri.tiledMapLayer({url: "https://gis.lib.uiowa.edu/gislib1/rest/services/williammorris/florencebasemaps2/MapServer"}),
-	 grayscale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmNzaGVwYXJkIiwiYSI6IjYwYjI0NzdmNDQwM2YzNTc1ODI2NWZhNTU1ZTVmNjY4In0.ct_UnOxwtV_WIGwzyG0Rxw', {id: 'mapbox.light', attribution: mbAttr}),
-	 dark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmNzaGVwYXJkIiwiYSI6IjYwYjI0NzdmNDQwM2YzNTc1ODI2NWZhNTU1ZTVmNjY4In0.ct_UnOxwtV_WIGwzyG0Rxw', {id: 'mapbox.dark', attribution: mbAttr}),
-	 opengeo = L.tileLayer.wms('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
-	 stamenbackground = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 18,
-	ext: 'png'
-}),
-	 stamenmap = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 18,
-	ext: 'png'
-});
-
-//	 var stamenUrl = "http://{S}tile.stamen.com/terrain/{Z}/{X}/{Y}.png";
-
-//var mstamenurl = stamenUrl.replace(/({[A-Z]})/g, function(s) {
-//    return s.toLowerCase();
-//});
+	 var blanktile =  L.esri.tiledMapLayer({url: "https://gis.lib.uiowa.edu/gislib1/rest/services/brinton/brintonmap/MapServer"}),
+  	 grayscale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmNzaGVwYXJkIiwiYSI6IjYwYjI0NzdmNDQwM2YzNTc1ODI2NWZhNTU1ZTVmNjY4In0.ct_UnOxwtV_WIGwzyG0Rxw', {id: 'mapbox.light', attribution: mbAttr}),
+  	 dark = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicmNzaGVwYXJkIiwiYSI6IjYwYjI0NzdmNDQwM2YzNTc1ODI2NWZhNTU1ZTVmNjY4In0.ct_UnOxwtV_WIGwzyG0Rxw', {id: 'mapbox.dark', attribution: mbAttr}),
+  	 opengeo = L.tileLayer.wms('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),
+  	 stamenbackground = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      	subdomains: 'abcd',
+      	minZoom: 0,
+      	maxZoom: 18,
+      	ext: 'png'
+      }),
+	   stamenmap = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+      	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      	subdomains: 'abcd',
+      	minZoom: 0,
+      	maxZoom: 18,
+      	ext: 'png'
+      });
 
 
-
-      var map = L.map('map', {
+    var map = L.map('map', {
 	  center: [37.2, -87],
-	  zoom: 6,
-	  layers: [grayscale],
-	  zoomControl: false,
+	  zoom: 5,
+    minZoom: 5,
+    maxZoom: 12,
+	  layers: [blanktile],
+	  zoomControl: false
 	  });
 
+    //sets the map panning boundary so it can't go past the United States
+    var corner1 = L.latLng(51, -125),
+    corner2 = L.latLng(23, -69)
+    var bounds = L.latLngBounds(corner1, corner2);
+    map.setMaxBounds(bounds);
 
-//	  var map2 = L.map('map2').setView(new L.LatLng(35,-95), 4);
-
-	  //removed for testing
-//	  map2.addLayer(stamenLayer2);
+    map.on('drag', function() {
+        map.panInsideBounds(bounds, { animate: true });
+    });
 
 
       // original open street maps tiles, remove above few lines and uncomment these
@@ -143,34 +126,34 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       // those params are coming automatically from the geoJson method
       var onEachFeature = function(feature, layer) {
         if (feature.properties) {
-			var prop = feature.properties;
-			var houseTakes, amount;
-			if (prop['House_takes'] != "No Data"){
-				houseTakes = prop['House_takes'] +'%<br>';
-			} else{
-				houseTakes = prop['House_takes'] +'<br>';
-			}
-			if (prop['Amount_Made'] != "No Data"){
-				amount = '$'+prop['Amount_Made'] +'<br>';
-			} else{
-				amount = prop['Amount_Made'] +'<br>';
-			}
-            /*var popup = '<h3>'+prop['Venue']+'  '+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h3>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes'];*/
+    			var prop = feature.properties;
+    			var houseTakes, amount;
+    			if (prop['House_takes'] != "No Data"){
+    				houseTakes = prop['House_takes'] +'%<br>';
+    			} else{
+    				houseTakes = prop['House_takes'] +'<br>';
+    			}
+    			if (prop['Amount_Made'] != "No Data"){
+    				amount = '$'+prop['Amount_Made'] +'<br>';
+    			} else{
+    				amount = prop['Amount_Made'] +'<br>';
+    			}
+                /*var popup = '<h3>'+prop['Venue']+'  '+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h3>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes'];*/
 
-			// you must create a layer property on each feature or else
-			// the search results won't know where the item is on the map / layer
-			feature.layer = layer;
-			//layer.bindPopup(popup, {maxWidth: "auto"});
-		  
-			layer.on('click', function(e) {
-				//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
-				if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
-					document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
-				} else {
-					document.getElementById("info").innerHTML = '<h4>'+prop['Venue']+'<br>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
-				}
-			})
-        }
+    			// you must create a layer property on each feature or else
+    			// the search results won't know where the item is on the map / layer
+    			feature.layer = layer;
+    			//layer.bindPopup(popup, {maxWidth: "auto"});
+
+    			layer.on('click', function(e) {
+    				//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
+    				if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
+    					document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+    				} else {
+    					document.getElementById("info").innerHTML = '<h4>'+prop['Venue']+'<br>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+    				}
+    			})
+    }// end if
       }; // end onEachFeature
 
       // used by the generic "all locations" layer
@@ -190,7 +173,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
         weight: 2,
         opacity: 0.1,
         fillOpacity: 0.1,
-		stroke: true,
+		    stroke: true,
       };
 
       // used by the timesliding layer
@@ -201,7 +184,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
         weight: 1,
         opacity: 1,
         fillOpacity: 0.9,
-		stroke: true,
+		    stroke: true,
       };
 
       var purpleCircleMarkers = {
@@ -214,7 +197,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       };
 
 	  var yellowCircleMarkers = {
-	  radius: 7,
+        radius: 7,
         fillColor: "#ffff00",
         color: "#000000",
         weight: 1,
@@ -285,9 +268,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
           props = feature.properties;
           var name = L.DomUtil.create('b', null, container);
           name.innerHTML = props.Town;
-
           container.appendChild(L.DomUtil.create('br', null, container));
-
           var cat = props.Town ? props.Venue : props.Town,
               info = cat;
           container.appendChild(document.createTextNode(info));
@@ -307,13 +288,13 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
           var site = L.geoJson(feat, {
             pointToLayer: function(feature, latLng) {
               var marker = L.marker(latLng, {
-			    icon: myIcon,
-                keyboard: false,
-                riseOnHover: true
+			              icon: myIcon,
+                    keyboard: false,
+                    riseOnHover: true
               });
               if (! L.touch) {
                 marker.on('mouseover', function(position) {
-                  // TODO can put text in here when hovering search
+                  // can put text in here when hovering search
                   // popup.innerHTML = 'Testing';
                   // L.DomUtil.setPosition(popup, pos);
                   // L.DomUtil.addClass(popup, 'visible');
@@ -336,9 +317,9 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 //	    var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.mapbox-terrain-v2', attribution: mbAttr});
 
 	 var brintondata = new L.geoJson(brintondata2, {
-	  onEachFeature: onEachFeature,
-pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, CircleMarkers);
+  	  onEachFeature: onEachFeature,
+      pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, CircleMarkers);
     }}).addTo(map);
 
 

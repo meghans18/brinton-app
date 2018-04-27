@@ -206,16 +206,16 @@ body {
 	margin-right: auto;
   text-align: center;
 }
-
+/*Map Specific CSS*/
 #feature_infos {
 	width:500px;
-    height: 210px;
-    background: rgba(255, 255, 255, 0.7);
-    position: absolute;
-    top:150px;
-    left:25px;
-    padding:5px;
-    border:3px solid grey;
+  height: 250px;
+  background: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  top:150px;
+  left:25px;
+  padding:5px;
+  border:3px solid grey;
 	z-index: 1000;
 	border-radius: 8px;
 }
@@ -223,6 +223,7 @@ body {
 #info h4 {
 	margin: 10px;
 	padding: 0px;
+	height: 150px;
 	color: orange;
 	font-family: "Montserrat";
 }

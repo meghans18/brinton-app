@@ -9,5 +9,9 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^1.8.4"
+  },
+  "dependencies": {
+    "circletype": "^2.2.0",
+    "owl.carousel": "^2.3.4"
   }
 }
