@@ -58,8 +58,31 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     <div id="map" style="width: 100%; height: 100%; position: absolute"></div>
 
   	<div id="feature_infos">
-  		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the slider in the top right corner to view his path from venue to venue.</p></div>
+  		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the buttons below to go from location to location in the order he visited them.</p></div>
   	</div>
+	<!-- <div id="sliderBtns">
+		<img id="left" src="../images/leftArrow.png" width="50" height="50" style="padding-right: 15px;"></img>
+		<img id="right" src="../images/rightArrow.png" width="50" height="50"></img>
+	</div>
+	<div id="search_bar">
+  		<div id="radioBtns">
+		  <input type="radio" id="notesCheck" name="search">
+		  <label for="notesCheck">Show Locations with Notes</label>
+		  <br>
+		  <input type="radio" id="lessThan50" name="search">
+		  <label for="lessThan50">Show Locations Where Profit < $50</label>
+		  <br>
+		  <input type="radio" id="greaterThan50" name="search">
+		  <label for="greaterThan50">Show Locations Where Profit > $50</label>
+		</div>
+		<div>
+			<button type="submit" onclick="submitted()">Submit</button>
+		</div>
+		<div id="searchBtns">
+			<img id="left2" src="../images/leftArrow.png" width="50" height="50" style="padding-right: 15px;"></img>
+			<img id="right2" src="../images/rightArrow.png" width="50" height="50"></img>
+		</div>
+  	</div> -->
 
     <script>
 	  	  var myIcon = L.icon({
@@ -148,9 +171,9 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     			layer.on('click', function(e) {
     				//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
     				if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
-    					document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+    					document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+', '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
     				} else {
-    					document.getElementById("info").innerHTML = '<h4>'+prop['Venue']+'<br>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+    					document.getElementById("info").innerHTML = '<h4>'+prop['Venue']+'<br>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+', '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
     				}
     			})
     }// end if
@@ -173,7 +196,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
         weight: 2,
         opacity: 0.1,
         fillOpacity: 0.1,
-		    stroke: true,
+		stroke: true,
       };
 
       // used by the timesliding layer
@@ -322,6 +345,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
           return L.circleMarker(latlng, CircleMarkers);
     }}).addTo(map);
 
+	console.log(brintondata);
 
 
 //	  		var baseLayers = {
@@ -353,7 +377,94 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     brintondata.onclick = function() {
       ipcRenderer.send('reset');
     }
+	
+	/*ipcRenderer.on('resetBtns', function() {
+		for (i=0;i<markers.length;i++) {
+			map.removeLayer(markers[i]);
+		}
+		document.getElementById("info").innerHTML = '<p>Click on the dots to see information on the venues Brinton traveled to or use the buttons below to go from location to location in the order he visited them.</p>'
+		num = 0;
+	})*/
 
+	
+	///////////////////////////////
+	/*var slider = document.getElementById('dateRange');
+	slider.defaultValue = 0;
+	var num = 0;
+	var markers = []
+	for (i=0; i<brintondata2.length; i++) {
+		var latlng = [brintondata2[i].properties.Latitude, brintondata2[i].properties.Longitude]
+		markers.push(L.circleMarker(latlng, orangeCircleMarkers));
+	}
+	var displayData = function(data, number) {
+		var prop = data[number].properties;
+		var houseTakes, amount;
+		if (prop['House_takes'] != "No Data"){
+			houseTakes = prop['House_takes'] +'%<br>';
+		}else{
+			houseTakes = prop['House_takes'] +'<br>';
+		}
+		if (prop['Amount_Made'] != "No Data"){
+			amount = '$'+prop['Amount_Made'] +'<br>';
+		}else{
+			amount = prop['Amount_Made'] +'<br>';
+		}
+		
+		//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
+		if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
+			document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+', '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+		}
+		else {
+			document.getElementById("info").innerHTML = '<h4>'+prop['Venue']+'<br>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+', '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
+		}
+	}
+	document.getElementById('left').addEventListener('click', function() {
+		if (num >= 0) {
+			map.removeLayer(markers[num+1]);
+			num--;
+		}
+		displayData(brintondata2, num);
+	})
+	document.getElementById('right').addEventListener('click', function() {
+		map.addLayer(markers[num]);
+		displayData(brintondata2, num);
+		num++;
+	})
+	
+	var notesCheck = document.getElementById('notesCheck');
+	var checkMarkers = [];
+	var checkData = [];
+	var processData = function(data, markers) {
+		var val = 0;
+		document.getElementById('left2').addEventListener('click', function() {
+			if (val >= 0) {
+				map.removeLayer(markers[val]);
+				displayData(data, val);
+				val--;
+			}
+		})
+		document.getElementById('right2').addEventListener('click', function() {
+			if (val == -1) {
+				val ++;
+			}
+			map.addLayer(markers[val]);
+			displayData(data, val);
+			val++;
+		})
+	}
+	var submitted = function() {
+		if (notesCheck.checked) {
+			for (i=0; i<brintondata2.length; i++) {
+				var notes = brintondata2[i].properties.Notes;
+				if (notes != "No Data") {
+					var latlng = [brintondata2[i].properties.Latitude, brintondata2[i].properties.Longitude]
+					checkMarkers.push(L.circleMarker(latlng, orangeCircleMarkers));
+					checkData.push(brintondata2[i])
+				}
+			}
+			processData(checkData, checkMarkers);
+		}
+	}*/
     </script>
 
   </body>
