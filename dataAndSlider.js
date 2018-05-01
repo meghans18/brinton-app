@@ -26965,6 +26965,7 @@ var brintondata2 = [{
 	}
 ]
 
+var dateSlider;
 L.Control.SliderControl = L.Control.extend({
     options: {
         position: 'topright',
@@ -27018,7 +27019,7 @@ L.Control.SliderControl = L.Control.extend({
 
         // Create a control sliderContainer with a jquery ui slider
         var sliderContainer = L.DomUtil.create('div', 'slider', this._container);
-        $(sliderContainer).append('<div id="leaflet-slider" style="width:200px"><div class="ui-slider-handle"></div><div id="slider-timestamp" style="width:200px; margin-top:13px; background-color:#FFFFFF; text-align:center; border-radius:5px;"></div></div>');
+        $(sliderContainer).append('<div id="leaflet-slider" style="width:800px; margin-top: 50px;"><div class="ui-slider-handle"></div><div id="slider-timestamp" style="width:800px; margin-top:13px; background-color:#FFFFFF; text-align:center; border-radius:5px;"></div></div>');
         //Prevent map panning/zooming while using the slider
         $(sliderContainer).mousedown(function () {
             map.dragging.disable();
@@ -27070,7 +27071,7 @@ L.Control.SliderControl = L.Control.extend({
             if(_options.range) _options.values = [_options.minValue,_options.maxValue];
             else _options.value = _options.maxValue;
         }
-        $("#leaflet-slider").slider({
+        dateSlider = $("#leaflet-slider").slider({
             range: _options.range,
             value: _options.value,
             values: _options.values,

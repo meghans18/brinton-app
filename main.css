@@ -220,6 +220,36 @@ body {
 	border-radius: 8px;
 }
 
+#search_bar {
+	width:400px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.7);
+  position: relative;
+  float: right;
+  top:90px;
+  right:25px;
+  padding:5px;
+  border:3px solid grey;
+	z-index: 1000;
+	border-radius: 8px;
+}
+
+#radioBtns {
+	padding: 10px;
+}
+
+#searchBtns {
+	
+}
+
+#sliderBtns {
+	width: 500px;
+	z-index: 1000;
+	position: relative;
+	left: 205px;
+	top: 415px;
+}
+
 #info h4 {
 	margin: 10px;
 	padding: 0px;
@@ -232,4 +262,27 @@ body {
 	margin: 10px;
 	padding: 0px;
 	font-family: "Montserrat";
+}
+
+label {
+	font-family: 'Montserrat';
+}
+
+#leaflet-slider .ui-slider-handle {
+	background-image: none;
+	background-color: orange;
+	border: 1px solid black;
+}
+
+.ui-slider {
+	right: 90px;
+	width: 350px;
+}
+
+#dateRange {
+	z-index: 1000;
+	position: relative;
+	float: right;
+	top: 60px;
+	width: 500px;
 }

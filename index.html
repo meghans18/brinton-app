@@ -108,15 +108,15 @@
 						ipcRenderer.send('openMap');
 						close = setTimeout(function() {
 							ipcRenderer.send('closeMap');
-						}, 10000);
-					}, 20000);
+						}, 150000);
+					}, 300000);
 				}
 
 				function resetTimer() {
 					clearTimeout(close);
 					clearInterval(open);
 					clearTimeout(t);
-					t = setTimeout(rotation, 30000);
+					t = setTimeout(rotation, 300000);
 				}
 			}
 

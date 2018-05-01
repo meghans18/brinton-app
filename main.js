@@ -34,7 +34,7 @@ function createWindow() {
     //main_win.webContents.openDevTools()
     //nowShowing.webContents.openDevTools()
     //meet.webContents.openDevTools()
-	  //map.webContents.openDevTools()
+	  map.webContents.openDevTools()
 
 
     main_win.on('closed', () => {
@@ -59,6 +59,7 @@ function createWindow() {
 
 	ipcMain.on('closeMap', function() {
         map.hide()
+		map.webContents.send('resetBtns')
     })
 
 	ipcMain.on('openMap', function() {
