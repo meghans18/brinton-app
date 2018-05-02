@@ -44,6 +44,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
         width: 100%;
         height: 100%;
         left: 1px;
+		top: -1px;
         position: absolute;
       }
 		</style>
@@ -58,7 +59,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     <div id="map" style="width: 100%; height: 100%; position: absolute"></div>
 
   	<div id="feature_infos">
-  		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the buttons below to go from location to location in the order he visited them.</p></div>
+  		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the slider above to show the path he took from location to location</p></div>
   	</div>
 	<!-- <div id="sliderBtns">
 		<img id="left" src="../images/leftArrow.png" width="50" height="50" style="padding-right: 15px;"></img>
@@ -345,8 +346,6 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
           return L.circleMarker(latlng, CircleMarkers);
     }}).addTo(map);
 
-	console.log(brintondata);
-
 
 //	  		var baseLayers = {
 //			"Dark": grayscale
@@ -378,14 +377,13 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       ipcRenderer.send('reset');
     }
 	
-	/*ipcRenderer.on('resetBtns', function() {
-		for (i=0;i<markers.length;i++) {
-			map.removeLayer(markers[i]);
-		}
-		document.getElementById("info").innerHTML = '<p>Click on the dots to see information on the venues Brinton traveled to or use the buttons below to go from location to location in the order he visited them.</p>'
-		num = 0;
-	})*/
-
+	ipcRenderer.on('resetBtns', function() {
+		for (i=0; i <= sliderControl.options.maxValue; i++) {
+            map.removeLayer(sliderControl.options.markers[i]);
+        }
+		dateSlider.slider('value', 0);
+		document.getElementById("info").innerHTML = '<p>Click on the dots to see information on the venues Brinton traveled to or use the slider above to show the path he took from location to location</p>';
+	})
 	
 	///////////////////////////////
 	/*var slider = document.getElementById('dateRange');
