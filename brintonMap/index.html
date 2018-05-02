@@ -361,6 +361,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 //			"opengeo": opengeo
 			};
 
+      $('.leaflet-control-attribution').hide();
 	  //L.control.layers(baseMaps, {collapsed:false}).addTo(map);
 
     document.getElementById('icon').onclick = function() {
@@ -376,7 +377,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     brintondata.onclick = function() {
       ipcRenderer.send('reset');
     }
-	
+
 	ipcRenderer.on('resetBtns', function() {
 		for (i=0; i <= sliderControl.options.maxValue; i++) {
             map.removeLayer(sliderControl.options.markers[i]);
@@ -384,7 +385,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 		dateSlider.slider('value', 0);
 		document.getElementById("info").innerHTML = '<p>Click on the dots to see information on the venues Brinton traveled to or use the slider above to show the path he took from location to location</p>';
 	})
-	
+
 	///////////////////////////////
 	/*var slider = document.getElementById('dateRange');
 	slider.defaultValue = 0;
@@ -407,7 +408,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 		}else{
 			amount = prop['Amount_Made'] +'<br>';
 		}
-		
+
 		//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
 		if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
 			document.getElementById("info").innerHTML = '<h4>'+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+', '+prop['Year']+'</h4>'+'<p>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes']+'</p>';
@@ -428,7 +429,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 		displayData(brintondata2, num);
 		num++;
 	})
-	
+
 	var notesCheck = document.getElementById('notesCheck');
 	var checkMarkers = [];
 	var checkData = [];
