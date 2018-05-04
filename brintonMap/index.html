@@ -58,9 +58,11 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     <!-- provide the map with a div to live inside -->
     <div id="map" style="width: 100%; height: 100%; position: absolute"></div>
 
+	<!-- static div that displays location information -->
   	<div id="feature_infos">
   		<div id="info"><p>Click on the dots to see information on the venues Brinton traveled to or use the slider above to show the path he took from location to location</p></div>
   	</div>
+	<!-- the html commented out below isn't fully implemented, started to make a search bar -->
 	<!-- <div id="sliderBtns">
 		<img id="left" src="../images/leftArrow.png" width="50" height="50" style="padding-right: 15px;"></img>
 		<img id="right" src="../images/rightArrow.png" width="50" height="50"></img>
@@ -162,6 +164,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     			} else{
     				amount = prop['Amount_Made'] +'<br>';
     			}
+				//used if a popup directly over the location is needed
                 /*var popup = '<h3>'+prop['Venue']+'  '+prop['Town']+', '+prop['State']+'<br>'+prop['Month']+' '+prop['Day']+' '+prop['Year']+'</h3>'+'Amount Made: '+ amount +'House take: '+ houseTakes +'Notes: '+prop['Notes'];*/
 
     			// you must create a layer property on each feature or else
@@ -169,6 +172,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
     			feature.layer = layer;
     			//layer.bindPopup(popup, {maxWidth: "auto"});
 
+				//used layer.on click so the data could be displayed in the static div rather than as a popup attached to the dot
     			layer.on('click', function(e) {
     				//added the following condition so there wouldn't be a blank spot if there wasn't a venue listed
     				if ((prop['Venue'] == "") || (prop['Venue'] == prop['Town']+', '+prop['State'])) {
@@ -190,6 +194,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
         fillOpacity: 0.5
       };
 
+		//used by brintondata layer
 	   var CircleMarkers = {
         radius: 6,
         fillColor: "#000000",
@@ -249,7 +254,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 
 
 
-       //now make a timeline layer that the slider can manipulate - REMOVED
+       //now make a timeline layer that the slider can manipulate
       var timelineLayer = L.geoJson(brintondata2, {
         onEachFeature: onEachFeature,
         pointToLayer: function(feature, latlng) {
@@ -258,7 +263,6 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       });
 
       // make a search layer
-      // now make a timeline layer that the slider can manipulate
       var searchLayer = L.geoJson(brintondata2, {
         onEachFeature: onEachFeature,
         pointToLayer: function(feature, latlng) {
@@ -268,7 +272,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       // searchLayer.addTo(map);
 
 
-      // create the slider   - REMOVED
+      // create the slider
       var sliderControl = L.control.sliderControl({
           position: "topright",
           layer: timelineLayer,
@@ -340,6 +344,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 
 //	    var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.mapbox-terrain-v2', attribution: mbAttr});
 
+	//main layer that shows all the black dots with orange outlines
 	 var brintondata = new L.geoJson(brintondata2, {
   	  onEachFeature: onEachFeature,
       pointToLayer: function (feature, latlng) {
@@ -360,7 +365,8 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 //			"Modern Map": grayscale,
 //			"opengeo": opengeo
 			};
-
+	
+		//hides leaflet label
       $('.leaflet-control-attribution').hide();
 	  //L.control.layers(baseMaps, {collapsed:false}).addTo(map);
 
@@ -370,6 +376,7 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
 
     var ipcRenderer = require('electron').ipcRenderer;
 
+	//when there is any activity, send a message to the main window so the inactivity timer can be reset
     window.onclick = function() {
       ipcRenderer.send('reset');
     }
@@ -378,17 +385,22 @@ Thanks to University of Iowa's Digital Scholarship and Publishing Studio for hos
       ipcRenderer.send('reset');
     }
 
+	//resets the slider and removes the orange dots whenever the window is closed (user navigates to different window or the
+	//inactivity timer starts
 	ipcRenderer.on('resetBtns', function() {
+		//remove all the layers created by the slider (stored in sliderControl variable made above)
 		for (i=0; i <= sliderControl.options.maxValue; i++) {
             map.removeLayer(sliderControl.options.markers[i]);
         }
+		//reset the value of the slider back to zero
 		dateSlider.slider('value', 0);
+		//reset the message in the static information div
 		document.getElementById("info").innerHTML = '<p>Click on the dots to see information on the venues Brinton traveled to or use the slider above to show the path he took from location to location</p>';
 	})
 
-	///////////////////////////////
-	/*var slider = document.getElementById('dateRange');
-	slider.defaultValue = 0;
+	//////////////////////////////////////////////////////
+	//everything below was used prototyping a search bar//
+	/*slider.defaultValue = 0;
 	var num = 0;
 	var markers = []
 	for (i=0; i<brintondata2.length; i++) {
