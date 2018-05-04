@@ -77,6 +77,7 @@
                 new CircleType(document.getElementById('curved-1')).radius(900);
                 new CircleType(document.getElementById('curved-2')).radius(700);
 
+				//these buttons open their corresponding windows when they are clicked
                 var watchBtn = document.getElementById('watch');
                 watchBtn.onclick = function() {
                     ipcRenderer.send('openShowing')
@@ -93,33 +94,45 @@
 
 			var t, open, close;
 			function idleTimer() {
+				//add all conditions on which the timer should reset (anything that counts as activity)
 				window.onload=resetTimer;
 				window.onclick=resetTimer;
+				//can receive messages from other windows if they also have activity
 				ipcRenderer.on('reset', function() {
 					resetTimer();
 				})
 
+				//sets up the inactivity rotation and handles all actions needed during the rotation
 				function rotation() {
+					//close/hide anything that shouldn't be open when inactivity starts
 					ipcRenderer.send('closeShowing');
 					ipcRenderer.send('closeMeet');
 					ipcRenderer.send('closeMap');
 
+					//main rotation timer
 					open = setInterval(function() {
+						//opens the map page after 5 minutes
 						ipcRenderer.send('openMap');
 						close = setTimeout(function() {
+							//closes the map 2.5 minutes after the map is opened
 							ipcRenderer.send('closeMap');
 						}, 150000);
 					}, 300000);
 				}
 
+				//determines how long after any activity the rotation timer will start
 				function resetTimer() {
+					//clear all the other timers whenever there is any activity
 					clearTimeout(close);
 					clearInterval(open);
 					clearTimeout(t);
+					//if there is not any more activity after the t timer is initially cleared,
+					//it will run the rotation function after 5 minutes
 					t = setTimeout(rotation, 300000);
 				}
 			}
-
+			
+			//run the idleTimer on the main page of the project
 			idleTimer();
         </script>
     </body>

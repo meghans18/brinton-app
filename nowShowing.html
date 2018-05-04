@@ -49,6 +49,7 @@
             <div class="container">
                 <h2 class="display-4">NOW SHOWING</h2>
             </div>
+			<!-- makes up the main part of the carousel that shows at all times -->
             <div class="owl-carousel owl-theme">
               <div class= "item lanternA_popup_open"><img id="image" src="images/lanternA%20(1).jpg" /></div>
               <div class= "item lanternB_popup_open"><img id="image" src="images/lanternB%20(1).jpg" /></div>
@@ -59,6 +60,7 @@
 			  <div class= "item lanternG_popup_open"><img id="image" src="images/lanternG%20(1).jpg" /></div>
             </div>
 
+			<!-- one popup associated with each element of the carousel, displays more images -->
             <div class="popups" id="lanternA_popup">
 			<p>TAP IMAGE FOR MORE</p>
               <img width="auto" height="25%" class="clickSwitch" id="A" src="images/lanternA%20(1).jpg">
@@ -90,6 +92,7 @@
         </div>
 
         <script>
+		//object with the length of each set of images
 		var setNum = {
 			'A':2,
 			'B':5,
@@ -106,8 +109,10 @@
 		});*/
 		
 		var i=2;
+		//each popup has the class clickSwitch so this works for each popup
 		$(".clickSwitch").click(function() {
 			var setLet = this.id;
+			//this if/else statement dynamically changes the image displayed in the popup
 			if (i>setNum[setLet]) {
 				i=1;
 				$('#'+setLet).attr("src", 'images/lantern'+setLet+'%20('+i.toString()+').jpg')
@@ -128,6 +133,7 @@
                 //var danceVid = document.getElementById('dance')
                 //var video1 = document.getElementById('video1')
 
+				//initializes the carousel
                 $('.owl-carousel').owlCarousel({
                     nav:false,
                     loop:true,
@@ -135,6 +141,8 @@
                     stagePadding:50,
                     center:true,
                 });
+				//initializes each popup for each element of the carousel
+				//needed some extra info onopen so that the clickSwitch part would work
                 $('#lanternA_popup').popup({
                   onopen: function() {
 					i=2;

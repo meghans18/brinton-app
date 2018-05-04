@@ -15,14 +15,6 @@ body {
      pointer-events: none;
 }
 
-.box {
-
-}
-
-.box p {
-    color: white;
-}
-
 .jumbotron {
     width: 1000px;
     margin-left: 145px;
@@ -220,36 +212,6 @@ body {
 	border-radius: 8px;
 }
 
-#search_bar {
-	width:400px;
-  height: 350px;
-  background: rgba(255, 255, 255, 0.7);
-  position: relative;
-  float: right;
-  top:90px;
-  right:25px;
-  padding:5px;
-  border:3px solid grey;
-	z-index: 1000;
-	border-radius: 8px;
-}
-
-#radioBtns {
-	padding: 10px;
-}
-
-#searchBtns {
-	
-}
-
-#sliderBtns {
-	width: 500px;
-	z-index: 1000;
-	position: relative;
-	left: 205px;
-	top: 415px;
-}
-
 #info h4 {
 	margin: 10px;
 	padding: 0px;
@@ -264,10 +226,7 @@ body {
 	font-family: "Montserrat";
 }
 
-label {
-	font-family: 'Montserrat';
-}
-
+/*styles leaflet slider*/
 #leaflet-slider .ui-slider-handle {
 	background-image: none;
 	background-color: orange;
@@ -279,10 +238,33 @@ label {
 	width: 350px;
 }
 
-#dateRange {
+/* search bar and slider buttons are only a prototypes as of right now, not fully working
+#sliderBtns {
+	width: 500px;
 	z-index: 1000;
 	position: relative;
-	float: right;
-	top: 60px;
-	width: 500px;
+	left: 205px;
+	top: 415px;
 }
+
+#radioBtns {
+	padding: 10px;
+}
+
+label {
+	font-family: 'Montserrat';
+}
+
+#search_bar {
+	width:400px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.7);
+  position: relative;
+  float: right;
+  top:90px;
+  right:25px;
+  padding:5px;
+  border:3px solid grey;
+	z-index: 1000;
+	border-radius: 8px;
+}*/
